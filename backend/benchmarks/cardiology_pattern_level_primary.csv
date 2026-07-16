@@ -1,0 +1,8 @@
+﻿expected_pattern,N,automated_composite,mean_expert,gap
+all_metrics_high,12,1.0,0.7228,0.2772
+category_accuracy_drop,12,0.88,0.6305,0.2495
+directed_path_drop,12,0.725,0.585,0.14
+recall_and_node_coverage_drop,12,0.6875,0.473,0.2145
+missing_critical_action_penalty,12,0.7625,0.4688,0.2937
+unsafe_extra_action_cap,12,0.4975,0.228,0.2695
+critical_relation_penalty,1,0.4,0.118,0.282

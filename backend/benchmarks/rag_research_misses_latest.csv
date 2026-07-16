@@ -1,0 +1,1 @@
+﻿id,mode,query,hit_rank,hit_at_1,hit_at_3,hit_at_5,miss,section_hit_score,key_phrase_hit_score,latency_ms,expected_protocol_ids,retrieved_protocol_ids,retrieved_sections,expected_key_phrases,top_protocol_id,top_protocol_title,top_section,top_chunk_index,top_preview,sources

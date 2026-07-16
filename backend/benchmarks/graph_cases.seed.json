@@ -1,0 +1,560 @@
+[
+  {
+    "case_id": "gestational_hypertension_monitoring",
+    "title": "Гестационная гипертензия: диагностика, терапия и мониторинг",
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": { "x": 0, "y": 0 },
+          "data": {
+            "label": "Пациентка 28 лет, беременность 30 недель",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": { "x": 0, "y": 0 },
+          "data": {
+            "label": "АД 145/95 мм рт.ст., головная боль и отеки",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "exam",
+          "type": "med",
+          "position": { "x": 0, "y": 0 },
+          "data": {
+            "label": "Повторное измерение артериального давления",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": { "x": 0, "y": 0 },
+          "data": {
+            "label": "Оценка протеинурии и анализы крови",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": { "x": 0, "y": 0 },
+          "data": {
+            "label": "Гестационная гипертензия легкой степени",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "medication",
+          "type": "med",
+          "position": { "x": 0, "y": 0 },
+          "data": {
+            "label": "Гипотензивная терапия",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "fetal_monitoring",
+          "type": "med",
+          "position": { "x": 0, "y": 0 },
+          "data": {
+            "label": "Мониторинг состояния плода",
+            "category": "MONITORING"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e1",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e2",
+          "source": "symptom",
+          "target": "exam",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e3",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e4",
+          "source": "exam",
+          "target": "diagnosis",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e5",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e6",
+          "source": "diagnosis",
+          "target": "medication",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e7",
+          "source": "diagnosis",
+          "target": "fetal_monitoring",
+          "label": "INDICATED_FOR"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_lab",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "student_graph": {
+          "nodes": [
+            {
+              "id": "profile",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Пациентка 28 лет, беременность 30 недель",
+                "category": "PATIENT_PROFILE"
+              }
+            },
+            {
+              "id": "symptom",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "АД 145/95 мм рт.ст., головная боль и отеки",
+                "category": "SYMPTOM"
+              }
+            },
+            {
+              "id": "exam",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Повторное измерение артериального давления",
+                "category": "MONITORING"
+              }
+            },
+            {
+              "id": "diagnosis",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Гестационная гипертензия легкой степени",
+                "category": "DIAGNOSIS"
+              }
+            },
+            {
+              "id": "medication",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Гипотензивная терапия",
+                "category": "MEDICATION"
+              }
+            },
+            {
+              "id": "fetal_monitoring",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Мониторинг состояния плода",
+                "category": "MONITORING"
+              }
+            }
+          ],
+          "edges": [
+            {
+              "id": "e1",
+              "source": "profile",
+              "target": "symptom",
+              "label": "DETERMINES"
+            },
+            {
+              "id": "e2",
+              "source": "symptom",
+              "target": "exam",
+              "label": "DETERMINES"
+            },
+            {
+              "id": "e4",
+              "source": "exam",
+              "target": "diagnosis",
+              "label": "DETERMINES"
+            },
+            {
+              "id": "e6",
+              "source": "diagnosis",
+              "target": "medication",
+              "label": "INDICATED_FOR"
+            },
+            {
+              "id": "e7",
+              "source": "diagnosis",
+              "target": "fetal_monitoring",
+              "label": "INDICATED_FOR"
+            }
+          ]
+        }
+      },
+      {
+        "variant_id": "wrong_therapy_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "student_graph": {
+          "nodes": [
+            {
+              "id": "profile",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Пациентка 28 лет, беременность 30 недель",
+                "category": "PATIENT_PROFILE"
+              }
+            },
+            {
+              "id": "symptom",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "АД 145/95 мм рт.ст., головная боль и отеки",
+                "category": "SYMPTOM"
+              }
+            },
+            {
+              "id": "exam",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Повторное измерение артериального давления",
+                "category": "MONITORING"
+              }
+            },
+            {
+              "id": "lab",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Оценка протеинурии и анализы крови",
+                "category": "LAB_TEST"
+              }
+            },
+            {
+              "id": "diagnosis",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Гестационная гипертензия легкой степени",
+                "category": "DIAGNOSIS"
+              }
+            },
+            {
+              "id": "medication",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Гипотензивная терапия",
+                "category": "MEDICATION"
+              }
+            },
+            {
+              "id": "fetal_monitoring",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Мониторинг состояния плода",
+                "category": "MONITORING"
+              }
+            }
+          ],
+          "edges": [
+            {
+              "id": "e1",
+              "source": "profile",
+              "target": "symptom",
+              "label": "DETERMINES"
+            },
+            {
+              "id": "e2",
+              "source": "symptom",
+              "target": "exam",
+              "label": "DETERMINES"
+            },
+            {
+              "id": "e3",
+              "source": "symptom",
+              "target": "lab",
+              "label": "REQUIRES_CONFIRMATION"
+            },
+            {
+              "id": "e4",
+              "source": "exam",
+              "target": "diagnosis",
+              "label": "DETERMINES"
+            },
+            {
+              "id": "e5",
+              "source": "lab",
+              "target": "diagnosis",
+              "label": "REQUIRES_CONFIRMATION"
+            },
+            {
+              "id": "e6",
+              "source": "diagnosis",
+              "target": "medication",
+              "label": "DETERMINES"
+            },
+            {
+              "id": "e7",
+              "source": "diagnosis",
+              "target": "fetal_monitoring",
+              "label": "INDICATED_FOR"
+            }
+          ]
+        }
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "student_graph": {
+          "nodes": [
+            {
+              "id": "profile",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Пациентка 28 лет, беременность 30 недель",
+                "category": "PATIENT_PROFILE"
+              }
+            },
+            {
+              "id": "symptom",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "АД 145/95 мм рт.ст., головная боль и отеки",
+                "category": "SYMPTOM"
+              }
+            },
+            {
+              "id": "exam",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Повторное измерение артериального давления",
+                "category": "MONITORING"
+              }
+            },
+            {
+              "id": "lab",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Оценка протеинурии и анализы крови",
+                "category": "LAB_TEST"
+              }
+            },
+            {
+              "id": "diagnosis",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Гестационная гипертензия легкой степени",
+                "category": "DIAGNOSIS"
+              }
+            },
+            {
+              "id": "medication",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Гипотензивная терапия",
+                "category": "MEDICATION"
+              }
+            },
+            {
+              "id": "fetal_monitoring",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Мониторинг состояния плода",
+                "category": "MONITORING"
+              }
+            },
+            {
+              "id": "unsafe_med",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Ингибитор АПФ",
+                "category": "MEDICATION"
+              }
+            }
+          ],
+          "edges": [
+            {
+              "id": "e1",
+              "source": "profile",
+              "target": "symptom",
+              "label": "DETERMINES"
+            },
+            {
+              "id": "e2",
+              "source": "symptom",
+              "target": "exam",
+              "label": "DETERMINES"
+            },
+            {
+              "id": "e3",
+              "source": "symptom",
+              "target": "lab",
+              "label": "REQUIRES_CONFIRMATION"
+            },
+            {
+              "id": "e4",
+              "source": "exam",
+              "target": "diagnosis",
+              "label": "DETERMINES"
+            },
+            {
+              "id": "e5",
+              "source": "lab",
+              "target": "diagnosis",
+              "label": "REQUIRES_CONFIRMATION"
+            },
+            {
+              "id": "e6",
+              "source": "diagnosis",
+              "target": "medication",
+              "label": "INDICATED_FOR"
+            },
+            {
+              "id": "e7",
+              "source": "diagnosis",
+              "target": "fetal_monitoring",
+              "label": "INDICATED_FOR"
+            },
+            {
+              "id": "e8",
+              "source": "diagnosis",
+              "target": "unsafe_med",
+              "label": "INDICATED_FOR"
+            }
+          ]
+        }
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "student_graph": {
+          "nodes": [
+            {
+              "id": "profile",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Пациентка 28 лет, беременность 30 недель",
+                "category": "PATIENT_PROFILE"
+              }
+            },
+            {
+              "id": "symptom",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "АД 145/95 мм рт.ст., головная боль и отеки",
+                "category": "SYMPTOM"
+              }
+            },
+            {
+              "id": "exam",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Повторное измерение артериального давления",
+                "category": "MONITORING"
+              }
+            },
+            {
+              "id": "lab",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Оценка протеинурии и анализы крови",
+                "category": "LAB_TEST"
+              }
+            },
+            {
+              "id": "diagnosis",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Гестационная гипертензия легкой степени",
+                "category": "DIAGNOSIS"
+              }
+            },
+            {
+              "id": "medication",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Гипотензивная терапия",
+                "category": "MEDICATION"
+              }
+            },
+            {
+              "id": "fetal_monitoring",
+              "type": "med",
+              "position": { "x": 0, "y": 0 },
+              "data": {
+                "label": "Мониторинг состояния плода",
+                "category": "MONITORING"
+              }
+            }
+          ],
+          "edges": [
+            {
+              "id": "e4",
+              "source": "exam",
+              "target": "diagnosis",
+              "label": "DETERMINES"
+            },
+            {
+              "id": "e5",
+              "source": "lab",
+              "target": "diagnosis",
+              "label": "REQUIRES_CONFIRMATION"
+            },
+            {
+              "id": "e6",
+              "source": "diagnosis",
+              "target": "medication",
+              "label": "INDICATED_FOR"
+            },
+            {
+              "id": "e7",
+              "source": "diagnosis",
+              "target": "fetal_monitoring",
+              "label": "INDICATED_FOR"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

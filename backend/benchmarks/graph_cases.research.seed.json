@@ -1,0 +1,4482 @@
+[
+  {
+    "case_id": "gestational_hypertension",
+    "title": "Гестационная гипертензия",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Пациентка 28 лет, беременность 30 недель",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "АД 145/95 мм рт.ст., головная боль и отеки",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "exam",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Повторное измерение артериального давления",
+            "category": "EXAM"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Оценка протеинурии и тромбоцитов",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Гестационная гипертензия легкой степени",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Лабеталол или метилдопа при показаниях",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг артериального давления и состояния плода",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Ингибитор АПФ при беременности",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_exam",
+          "source": "symptom",
+          "target": "exam",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_exam_diagnosis",
+          "source": "exam",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "profile",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "severe_preeclampsia",
+    "title": "Тяжелая преэклампсия",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Пациентка 32 лет, беременность 35 недель",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "АД 170/110 мм рт.ст., головная боль и нарушение зрения",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Протеинурия, креатинин и тромбоциты",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "exam",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Оценка неврологических симптомов",
+            "category": "EXAM"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Тяжелая преэклампсия",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Сульфат магния для профилактики судорог",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг АД, диуреза и сердцебиения плода",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Ингибитор АПФ при беременности",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_exam",
+          "source": "symptom",
+          "target": "exam",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_exam_diagnosis",
+          "source": "exam",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "profile",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "ectopic_pregnancy",
+    "title": "Внематочная беременность",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Пациентка репродуктивного возраста с задержкой менструации",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Боль внизу живота, кровянистые выделения и слабость",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Положительный бета-ХГЧ",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "instrumental",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Трансвагинальное УЗИ без плодного яйца в матке",
+            "category": "INSTRUMENTAL_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Внематочная беременность",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Лапароскопическое лечение при нестабильности",
+            "category": "SURGERY"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг гемодинамики и уровня ХГЧ",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Ожидательная тактика при гемодинамической нестабильности",
+            "category": "SURGERY"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_instrumental",
+          "source": "symptom",
+          "target": "instrumental",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_instrumental_diagnosis",
+          "source": "instrumental",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "symptom",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "obstetric_sepsis",
+    "title": "Акушерский сепсис",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Роженица в раннем послеродовом периоде",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Лихорадка, тахикардия и гипотензия",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Лейкоцитоз, С-реактивный белок и посев крови",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "exam",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Оценка источника инфекции",
+            "category": "EXAM"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Акушерский сепсис",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Немедленная широкоспектральная антибактериальная терапия",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг лактата, диуреза и гемодинамики",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Задержка введения антибиотика при сепсисе",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_exam",
+          "source": "symptom",
+          "target": "exam",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_exam_diagnosis",
+          "source": "exam",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "diagnosis",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "pulmonary_embolism_pregnancy",
+    "title": "Тромбоэмболия легочной артерии при беременности",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Беременная пациентка с внезапной одышкой",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Одышка, боль в груди и тахикардия",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "instrumental",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Компрессионное УЗИ вен или КТ-ангиография по показаниям",
+            "category": "INSTRUMENTAL_TEST"
+          }
+        },
+        {
+          "id": "exam",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Оценка сатурации и гемодинамики",
+            "category": "EXAM"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Тромбоэмболия легочной артерии",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Низкомолекулярный гепарин",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг сатурации, кровотечения и состояния плода",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Варфарин в первом триместре беременности",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_instrumental",
+          "source": "symptom",
+          "target": "instrumental",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_instrumental_diagnosis",
+          "source": "instrumental",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_exam",
+          "source": "symptom",
+          "target": "exam",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_exam_diagnosis",
+          "source": "exam",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "profile",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "anaphylactic_shock",
+    "title": "Анафилактический шок",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Пациент после введения лекарственного препарата",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Крапивница, бронхоспазм и падение артериального давления",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "exam",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Оценка дыхательных путей, сатурации и давления",
+            "category": "EXAM"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Сывороточная триптаза при возможности",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Анафилактический шок",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Адреналин внутримышечно",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг дыхательных путей и гемодинамики",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Бета-блокатор как лечение анафилаксии",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_exam",
+          "source": "symptom",
+          "target": "exam",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_exam_diagnosis",
+          "source": "exam",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "diagnosis",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "pediatric_asthma_exacerbation",
+    "title": "Обострение бронхиальной астмы у ребенка",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Ребенок 9 лет с известной бронхиальной астмой",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Свистящее дыхание, одышка и кашель",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "exam",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Аускультация легких и оценка степени одышки",
+            "category": "EXAM"
+          }
+        },
+        {
+          "id": "instrumental",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Пикфлоуметрия или спирометрия при возможности",
+            "category": "INSTRUMENTAL_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Обострение бронхиальной астмы",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Ингаляционный сальбутамол через спейсер",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг сатурации и частоты дыхания",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Неселективный бета-блокатор при бронхоспазме",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_exam",
+          "source": "symptom",
+          "target": "exam",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_exam_diagnosis",
+          "source": "exam",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_instrumental",
+          "source": "symptom",
+          "target": "instrumental",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_instrumental_diagnosis",
+          "source": "instrumental",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "symptom",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "ulcerative_colitis_child",
+    "title": "Язвенный колит у детей",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Подросток с длительной диареей",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Кровь в стуле, боль в животе и потеря массы тела",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Фекальный кальпротектин и общий анализ крови",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "instrumental",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Колоноскопия с биопсией",
+            "category": "INSTRUMENTAL_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Язвенный колит",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Месалазин или кортикостероиды по тяжести",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг роста, питания и активности воспаления",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "НПВС при активном язвенном колите",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_instrumental",
+          "source": "symptom",
+          "target": "instrumental",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_instrumental_diagnosis",
+          "source": "instrumental",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "diagnosis",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "renovascular_hypertension",
+    "title": "Реноваскулярная гипертензия",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Пациент с резистентной артериальной гипертензией",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Высокое АД несмотря на комбинированную терапию",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "instrumental",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Дуплексное сканирование почечных артерий",
+            "category": "INSTRUMENTAL_TEST"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Креатинин и скорость клубочковой фильтрации",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Реноваскулярная гипертензия",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Реваскуляризация почечной артерии при показаниях",
+            "category": "SURGERY"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг АД и функции почек",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Ингибитор АПФ при двустороннем стенозе почечных артерий",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_instrumental",
+          "source": "symptom",
+          "target": "instrumental",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_instrumental_diagnosis",
+          "source": "instrumental",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "diagnosis",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "von_willebrand_disease",
+    "title": "Болезнь Виллебранда",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Пациент с повторными носовыми кровотечениями",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Кровоточивость слизистых и синяки после травм",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Активность фактора Виллебранда и фактор VIII",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "lab2",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "АЧТВ и агрегация тромбоцитов",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Болезнь Виллебранда",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Десмопрессин или концентрат фактора Виллебранда",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг кровотечения и гемостаза",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Аспирин при болезни Виллебранда",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_lab2",
+          "source": "symptom",
+          "target": "lab2",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab2_diagnosis",
+          "source": "lab2",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "diagnosis",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "diabetic_ketoacidosis_child",
+    "title": "Диабетический кетоацидоз у ребенка",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Ребенок с сахарным диабетом 1 типа",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Рвота, боли в животе, запах ацетона и сонливость",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Глюкоза, кетоны и метаболический ацидоз",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "lab2",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Калий, натрий и осмолярность крови",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Диабетический кетоацидоз",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Инфузионная терапия и внутривенный инсулин",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг гликемии, калия и неврологического статуса",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Рутинное введение бикарбоната без тяжелого ацидоза",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_lab2",
+          "source": "symptom",
+          "target": "lab2",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab2_diagnosis",
+          "source": "lab2",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "diagnosis",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "acute_appendicitis_child",
+    "title": "Острый аппендицит у ребенка",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Ребенок с острой болью в животе",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Боль в правой подвздошной области, тошнота и лихорадка",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "exam",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Симптомы раздражения брюшины",
+            "category": "EXAM"
+          }
+        },
+        {
+          "id": "instrumental",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "УЗИ органов брюшной полости",
+            "category": "INSTRUMENTAL_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Острый аппендицит",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Аппендэктомия",
+            "category": "SURGERY"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг температуры и послеоперационной раны",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Слабительные средства при подозрении на аппендицит",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_exam",
+          "source": "symptom",
+          "target": "exam",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_exam_diagnosis",
+          "source": "exam",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_instrumental",
+          "source": "symptom",
+          "target": "instrumental",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_instrumental_diagnosis",
+          "source": "instrumental",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "symptom",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "community_pneumonia_child",
+    "title": "Внебольничная пневмония у ребенка",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Ребенок с кашлем и лихорадкой",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Лихорадка, тахипноэ и влажные хрипы",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "instrumental",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Рентгенография органов грудной клетки",
+            "category": "INSTRUMENTAL_TEST"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Общий анализ крови и С-реактивный белок",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Внебольничная пневмония",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Антибактериальная терапия по возрасту и тяжести",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг сатурации и дыхательной недостаточности",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Опиоидное противокашлевое средство у ребенка",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_instrumental",
+          "source": "symptom",
+          "target": "instrumental",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_instrumental_diagnosis",
+          "source": "instrumental",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "profile",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "meningococcal_infection",
+    "title": "Менингококковая инфекция",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Пациент с внезапной лихорадкой",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Петехиальная сыпь, ригидность затылочных мышц и слабость",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "exam",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Осмотр кожи и менингеальные симптомы",
+            "category": "EXAM"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Посев крови или ПЦР на менингококк",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Менингококковая инфекция",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Немедленное введение цефтриаксона",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг гемодинамики и сознания",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Отсрочка антибиотика до лабораторного подтверждения",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_exam",
+          "source": "symptom",
+          "target": "exam",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_exam_diagnosis",
+          "source": "exam",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "diagnosis",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "acute_coronary_syndrome",
+    "title": "Острый коронарный синдром",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Пациент 58 лет с факторами сердечно-сосудистого риска",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Загрудинная боль с иррадиацией и холодный пот",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "instrumental",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "ЭКГ в 12 отведениях",
+            "category": "INSTRUMENTAL_TEST"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Серийное определение тропонина",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Острый коронарный синдром",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Антитромботическая терапия и реперфузия по показаниям",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг ЭКГ, боли и гемодинамики",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Тромболизис при активном кровотечении",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_instrumental",
+          "source": "symptom",
+          "target": "instrumental",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_instrumental_diagnosis",
+          "source": "instrumental",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "symptom",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "ischemic_stroke",
+    "title": "Ишемический инсульт",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Пациент с внезапной очаговой неврологической симптоматикой",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Слабость в руке, асимметрия лица и нарушение речи",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "exam",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Оценка неврологического дефицита по шкале NIHSS",
+            "category": "EXAM"
+          }
+        },
+        {
+          "id": "instrumental",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "КТ или МРТ головного мозга",
+            "category": "INSTRUMENTAL_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Ишемический инсульт",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Тромболитическая терапия в терапевтическом окне",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Неврологический мониторинг и контроль давления",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Тромболизис при внутричерепном кровоизлиянии",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_exam",
+          "source": "symptom",
+          "target": "exam",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_exam_diagnosis",
+          "source": "exam",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_instrumental",
+          "source": "symptom",
+          "target": "instrumental",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_instrumental_diagnosis",
+          "source": "instrumental",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "diagnosis",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "neonatal_sepsis",
+    "title": "Неонатальный сепсис",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Новорожденный первых суток жизни",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Вялость, нестабильная температура и плохое сосание",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Посев крови, С-реактивный белок и прокальцитонин",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "exam",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Оценка дыхания, перфузии и тонуса",
+            "category": "EXAM"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Неонатальный сепсис",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Ампициллин и гентамицин эмпирически",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг температуры, дыхания и гемодинамики",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Задержка антибиотиков при подозрении на сепсис",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_exam",
+          "source": "symptom",
+          "target": "exam",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_exam_diagnosis",
+          "source": "exam",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "diagnosis",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "iron_deficiency_anemia_pregnancy",
+    "title": "Железодефицитная анемия при беременности",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Беременная пациентка во втором триместре",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Слабость, бледность и одышка при нагрузке",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Гемоглобин, ферритин и средний объем эритроцита",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "exam",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Оценка симптомов анемии и питания",
+            "category": "EXAM"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Железодефицитная анемия при беременности",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Пероральные препараты железа",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Контроль гемоглобина и ферритина",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Высокие дозы железа без лабораторного контроля",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_exam",
+          "source": "symptom",
+          "target": "exam",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_exam_diagnosis",
+          "source": "exam",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "diagnosis",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "pulmonary_tuberculosis",
+    "title": "Туберкулез легких",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Пациент с длительным кашлем",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Кашель более двух недель, ночная потливость и похудание",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Микроскопия, ПЦР или посев мокроты",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "instrumental",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Рентгенография органов грудной клетки",
+            "category": "INSTRUMENTAL_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Туберкулез легких",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Комбинированная противотуберкулезная терапия",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Контроль мокроты, переносимости и приверженности",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Монотерапия одним противотуберкулезным препаратом",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_instrumental",
+          "source": "symptom",
+          "target": "instrumental",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_instrumental_diagnosis",
+          "source": "instrumental",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "diagnosis",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  },
+  {
+    "case_id": "chronic_kidney_disease",
+    "title": "Хроническая болезнь почек",
+    "metadata": {
+      "source": "deterministic_research_seed",
+      "requires_expert_review": true,
+      "error_taxonomy": [
+        "missing_diagnostic_step",
+        "wrong_category",
+        "wrong_relation",
+        "missing_critical_action",
+        "extra_unsafe_action",
+        "broken_chain",
+        "missing_contraindication"
+      ]
+    },
+    "reference_graph": {
+      "nodes": [
+        {
+          "id": "profile",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Пациент с сахарным диабетом и гипертензией",
+            "category": "PATIENT_PROFILE"
+          }
+        },
+        {
+          "id": "symptom",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Отеки, повышенное АД и снижение толерантности к нагрузке",
+            "category": "SYMPTOM"
+          }
+        },
+        {
+          "id": "lab",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "СКФ и альбуминурия",
+            "category": "LAB_TEST"
+          }
+        },
+        {
+          "id": "instrumental",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "УЗИ почек",
+            "category": "INSTRUMENTAL_TEST"
+          }
+        },
+        {
+          "id": "diagnosis",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Хроническая болезнь почек",
+            "category": "DIAGNOSIS"
+          }
+        },
+        {
+          "id": "action",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Нефропротективная медикаментозная терапия",
+            "category": "MEDICATION"
+          }
+        },
+        {
+          "id": "followup",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Мониторинг СКФ, калия и альбуминурии",
+            "category": "MONITORING"
+          }
+        },
+        {
+          "id": "contraindication",
+          "type": "med",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "data": {
+            "label": "Регулярный прием НПВС при хронической болезни почек",
+            "category": "MEDICATION"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_profile_symptom",
+          "source": "profile",
+          "target": "symptom",
+          "label": "DETERMINES"
+        },
+        {
+          "id": "e_symptom_lab",
+          "source": "symptom",
+          "target": "lab",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_lab_diagnosis",
+          "source": "lab",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_symptom_instrumental",
+          "source": "symptom",
+          "target": "instrumental",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_instrumental_diagnosis",
+          "source": "instrumental",
+          "target": "diagnosis",
+          "label": "REQUIRES_CONFIRMATION"
+        },
+        {
+          "id": "e_diagnosis_action",
+          "source": "diagnosis",
+          "target": "action",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_diagnosis_followup",
+          "source": "diagnosis",
+          "target": "followup",
+          "label": "INDICATED_FOR"
+        },
+        {
+          "id": "e_contraindication",
+          "source": "contraindication",
+          "target": "diagnosis",
+          "label": "CONTRAINDICATED_DUE_TO"
+        }
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "perfect",
+        "expected_pattern": "all_metrics_high",
+        "student_graph": "__same_as_reference__"
+      },
+      {
+        "variant_id": "missing_diagnostic_step",
+        "expected_pattern": "recall_and_node_coverage_drop",
+        "operation": "remove_categories",
+        "categories": [
+          "EXAM",
+          "LAB_TEST",
+          "INSTRUMENTAL_TEST"
+        ]
+      },
+      {
+        "variant_id": "wrong_symptom_category",
+        "expected_pattern": "category_accuracy_drop",
+        "operation": "change_node_category",
+        "node_id": "symptom",
+        "category": "DIAGNOSIS"
+      },
+      {
+        "variant_id": "wrong_action_relation",
+        "expected_pattern": "critical_relation_penalty",
+        "operation": "replace_edge_label",
+        "edge_id": "e_diagnosis_action",
+        "label": "DETERMINES"
+      },
+      {
+        "variant_id": "missing_critical_action",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_diagnosis_action"
+      },
+      {
+        "variant_id": "extra_unsafe_treatment",
+        "expected_pattern": "unsafe_extra_action_cap",
+        "operation": "add_unsafe_medication"
+      },
+      {
+        "variant_id": "broken_chain",
+        "expected_pattern": "directed_path_zero",
+        "operation": "remove_edges_from_categories",
+        "source_categories": [
+          "PATIENT_PROFILE",
+          "SYMPTOM"
+        ]
+      },
+      {
+        "variant_id": "missing_contraindication",
+        "expected_pattern": "missing_critical_action_penalty",
+        "operation": "remove_edge_id",
+        "edge_id": "e_contraindication"
+      }
+    ]
+  }
+]

@@ -1,0 +1,83 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.local.txt
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Node / Nuxt
+node_modules/
+.nuxt/
+.output/
+.output-*/
+.nuxt-*/
+dist/
+
+# Logs and runtime output
+*.log
+*.pid
+*.db
+*.sqlite
+*.sqlite3
+
+# Local temporary work
+tmp/
+output/
+.codex-tmp/
+.claude/
+
+# Generated publication and analysis artifacts
+docs/article_figures/
+docs/eval_data/
+docs/*.docx
+docs/*.pdf
+docs/ethics/*.docx
+docs/article_corrections_*.md
+docs/cardiology_expert_validation_report_*.md
+docs/build_scientific_reports_figure8.py
+docs/prepare_scientific_reports_figures.py
+docs/restructure_scientific_reports_display_items.py
+docs/table_3_cardiology_tasks_protocols.*
+*.aux
+*.bbl
+*.blg
+*.out
+*.synctex.gz
+
+# Mixed historical expert-validation exports retained only in the local archive.
+# The curated, de-identified primary and pilot artifacts live directly in
+# backend/benchmarks/.
+backend/benchmarks/_archived_stale_realvalidation_2026-07/
+# Superseded standalone audits mixed pilot and pre-primary exports. The current
+# primary audit is cardiology_real_reference_audit_v2_latest.csv.
+backend/benchmarks/cardiology_reference_audit_latest.csv
+backend/benchmarks/cardiology_reference_audit_latest.json
+backend/benchmarks/cardiology_reference_audit_v2_latest.csv
+backend/benchmarks/cardiology_reference_audit_v2_latest.json
+
+# Local backups and editor recovery files
+*.bak
+*.orig
+*.tmp
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# operational artifacts (dedup backup, extraction checkpoint)
+backend/_medical_nodes_backup.json
+backend/_protocol_catalog_checkpoint.json
+
+# Server-wide deployment config (never publish)
+nginx.conf

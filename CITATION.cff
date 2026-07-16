@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software or its benchmark methodology, please cite the repository and the associated publication."
+title: "MedConstructor"
+type: software
+authors:
+  - family-names: Takuadina
+    given-names: Aliya
+  - family-names: Shafeyev
+    given-names: Daniil
+repository-code: "https://github.com/argokz/MedConstructor"
+url: "https://itwin.kz/medical/"
+version: "4.3"
+date-released: 2026-07-14
+keywords:
+  - clinical reasoning
+  - medical education
+  - knowledge graphs
+  - retrieval-augmented generation
+  - formative assessment

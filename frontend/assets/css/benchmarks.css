@@ -1,0 +1,133 @@
+.bench-page {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.bench-page .panel {
+  border: 1px solid rgba(var(--v-border-color), 0.14);
+  border-radius: 8px !important;
+}
+
+.bench-page .rounded-tabs {
+  border-radius: 8px;
+}
+
+.bench-page .metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.bench-page .metric-grid.wide {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.bench-page .metric-tile {
+  min-height: 78px;
+  padding: 12px;
+  border: 1px solid rgba(var(--v-border-color), 0.12);
+  border-radius: 8px;
+  background: rgb(var(--v-theme-surface-variant));
+}
+
+.bench-page .metric-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 20px;
+  color: rgba(var(--v-theme-on-surface), 0.68);
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.bench-page .metric-label span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.bench-page .detail-table td {
+  vertical-align: top;
+}
+
+.bench-page .chart-row {
+  display: grid;
+  grid-template-columns: minmax(96px, 1fr) minmax(120px, 2fr) minmax(64px, auto);
+  gap: 8px;
+  align-items: center;
+  min-height: 34px;
+}
+
+.bench-page .chart-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bench-page .chart-track {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(var(--v-border-color), 0.16);
+  overflow: hidden;
+}
+
+.bench-page .chart-fill {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.bench-page .chart-fill.primary {
+  background: rgb(var(--v-theme-primary));
+}
+
+.bench-page .chart-fill.secondary {
+  background: rgb(var(--v-theme-secondary));
+}
+
+.bench-page .chart-fill.success {
+  background: rgb(var(--v-theme-success));
+}
+
+.bench-page .chart-value {
+  min-width: 52px;
+  text-align: right;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.bench-page .tone-primary {
+  border-left: 3px solid rgb(var(--v-theme-primary));
+}
+
+.bench-page .tone-secondary {
+  border-left: 3px solid rgb(var(--v-theme-secondary));
+}
+
+.bench-page .tone-success {
+  border-left: 3px solid rgb(var(--v-theme-success));
+}
+
+.bench-page .tone-info {
+  border-left: 3px solid rgb(var(--v-theme-info));
+}
+
+.bench-page .tone-warning {
+  border-left: 3px solid rgb(var(--v-theme-warning));
+}
+
+.bench-page .tone-error {
+  border-left: 3px solid rgb(var(--v-theme-error));
+}
+
+.bench-page .tone-accent {
+  border-left: 3px solid rgb(var(--v-theme-accent));
+}
+
+@media (max-width: 720px) {
+  .bench-page .metric-grid,
+  .bench-page .metric-grid.wide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

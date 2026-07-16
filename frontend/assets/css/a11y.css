@@ -1,0 +1,50 @@
+.v-btn.v-btn--icon.v-btn--density-compact.v-btn--size-x-small,
+.v-btn.v-btn--icon.v-btn--density-compact.v-btn--size-small,
+.v-btn.v-btn--icon.v-btn--density-compact.v-btn--size-default {
+  min-width: 44px !important;
+  min-height: 44px !important;
+}
+
+.v-btn-group .v-btn.v-btn--icon.v-btn--density-compact.v-btn--size-x-small,
+.v-btn-group .v-btn.v-btn--icon.v-btn--density-compact.v-btn--size-small,
+.v-btn-group .v-btn.v-btn--icon.v-btn--density-compact.v-btn--size-default {
+  flex-basis: 44px !important;
+}
+
+.vue-flow__controls-button {
+  box-sizing: border-box !important;
+  width: 44px !important;
+  height: 44px !important;
+  padding: 0 !important;
+}
+
+.vue-flow__controls-button svg {
+  max-width: 18px !important;
+  max-height: 18px !important;
+}
+
+.vue-flow__controls-button:focus-visible,
+.v-btn.v-btn--icon:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.35);
+  outline-offset: 2px;
+}
+
+/*
+ * Tooltips: the light theme sets `surface-variant` to #f8fafc (used as a muted
+ * panel background), which Vuetify also uses for tooltip content — producing a
+ * near-white tooltip with light text that is impossible to read. Force a
+ * readable dark tooltip everywhere and cap the width so long hints wrap instead
+ * of stretching across the viewport.
+ */
+.v-tooltip > .v-overlay__content {
+  max-width: 320px !important;
+  padding: 6px 10px !important;
+  border-radius: 6px !important;
+  background: #0f172a !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.25) !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+  opacity: 1 !important;
+}
